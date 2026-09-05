@@ -5,9 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Has Elon Solved Chess Yet? — The 10-Year Delusion Tracker</title>
   <meta name="description" content="Tracking Elon Musk's prediction that chess will be 'essentially fully solved (like checkers) within 10 years'. Countdown, logarithmic scales, and Grok compression simulator.">
-  <meta property="og:title" content="Has Elon Solved Chess Yet?">
-  <meta property="og:description" content="Elon Musk predicted chess will be fully solved like checkers by May 2034. Physics says no. Check the live delusion tracker.">
+  <meta property="og:title" content="Has Elon Solved Chess Yet? — The 10-Year Delusion Tracker">
+  <meta property="og:description" content="Elon Musk predicted chess will be fully solved like checkers by May 2034. Legal positions: 10⁴⁴. Game variations: 10¹²⁰. Atoms in universe: 10⁸⁰. Track the live countdown.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://haselonsolvedchessyet.com/">
+  <meta property="og:image" content="https://haselonsolvedchessyet.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Has Elon Musk Solved Chess Yet? Live 10-Year Countdown Tracker">
+
+  <!-- Twitter / X Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@elonmusk">
+  <meta name="twitter:creator" content="@elonmusk">
+  <meta name="twitter:title" content="Has Elon Solved Chess Yet? — The 10-Year Delusion Tracker">
+  <meta name="twitter:description" content="Elon Musk predicted chess will be fully solved like checkers by May 2034. Physics says 10¹²⁰ variations say otherwise. Live countdown.">
+  <meta name="twitter:image" content="https://haselonsolvedchessyet.com/og-image.png">
+  <meta name="twitter:image:alt" content="Has Elon Musk Solved Chess Yet? Live 10-Year Countdown Tracker">
+
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♟️</text></svg>">
 </head>
@@ -34,9 +49,13 @@
         <span class="icon" id="sfx-icon">🔇</span>
         <span id="sfx-text">SOUND: OFF</span>
       </button>
+      <button id="copy-btn" class="hud-btn" aria-label="Copy Link and Stats to Clipboard">
+        <span class="icon" id="copy-icon">📋</span>
+        <span id="copy-text">COPY LINK</span>
+      </button>
       <button id="share-btn" class="hud-btn highlight">
         <span class="icon">𝕏</span>
-        <span>SHARE DELUSION</span>
+        <span>SHARE ON 𝕏</span>
       </button>
     </div>
   </div>
@@ -113,12 +132,20 @@
           <div class="tweet-header">
             <div class="tweet-author-info">
               <div class="avatar-elon">
-                <span class="avatar-letter">𝕏</span>
+                <svg viewBox="0 0 100 100" width="40" height="40" class="elon-vector-avatar" aria-label="Elon Musk Avatar">
+                  <circle cx="50" cy="50" r="50" fill="#1e2732"/>
+                  <circle cx="50" cy="38" r="18" fill="#d1d5db"/>
+                  <path d="M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z" fill="#9ca3af"/>
+                </svg>
               </div>
               <div class="tweet-names">
                 <div class="author-name-row">
                   <span class="author-name">Elon Musk</span>
-                  <span class="verified-badge" title="Verified Account">✓</span>
+                  <span class="verified-badge" title="Verified Account">
+                    <svg viewBox="0 0 22 22" width="16" height="16" class="verified-svg" aria-label="Verified account" role="img">
+                      <path fill="#1d9bf0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.246-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681.132-.637.075-1.299-.164-1.903.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.136 2.136 5.429-5.429 1.293 1.293-6.722 6.73z"/>
+                    </svg>
+                  </span>
                   <span class="author-handle">@elonmusk</span>
                 </div>
                 <div class="tweet-context">Replying to @BillyM2k</div>
@@ -142,7 +169,9 @@
           <!-- Community Notes Satire -->
           <div class="community-note">
             <div class="note-header">
-              <span class="note-icon">📋</span>
+              <span class="note-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v15c0 1.38-1.119 2.5-2.5 2.5h-11C5.119 22 4 20.88 4 19.5v-15zM6.5 4c-.276 0-.5.22-.5.5v15c0 .28.224.5.5.5h11c.276 0 .5-.22.5-.5v-15c0-.28-.224-.5-.5-.5h-11z M8 7h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+              </span>
               <span class="note-title">Readers added context they thought people might want to know</span>
             </div>
             <div class="note-body">
@@ -151,6 +180,30 @@
             <div class="note-feedback">
               <span class="note-rate">Do you find this helpful? <button class="feedback-btn active">Yes (99.9%)</button> <button class="feedback-btn">No (Elon's burner)</button></span>
             </div>
+          </div>
+
+          <!-- Official Tweet Action Bar -->
+          <div class="tweet-actions-bar">
+            <button class="tweet-action reply" title="Reply">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.25c-4.42 0-8.005-3.58-8.005-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.32 2.688 6.01 6.005 6.01h2.25v2.32l4.897-2.71c2.04-1.13 3.348-3.28 3.348-5.62 0-3.39-2.75-6.13-6.13-6.13h-4.365z"/></svg>
+              <span>3.4K</span>
+            </button>
+            <button class="tweet-action repost" title="Repost">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/></svg>
+              <span>8.9K</span>
+            </button>
+            <button class="tweet-action like" title="Like">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-2.415.11-4.3 2.16-4.3 4.67 0 4.04 4.095 7.6 8.598 10.98l.398.3.398-.3c4.503-3.38 8.598-6.94 8.598-10.98 0-2.51-1.885-4.56-4.3-4.67zm-4.701 13.95C7.94 16.41 5 13.38 5 10.17c0-1.47 1.05-2.67 2.4-2.67.92 0 1.95.59 2.76 1.68l1.84 2.48 1.84-2.48c.81-1.09 1.84-1.68 2.76-1.68 1.35 0 2.4 1.2 2.4 2.67 0 3.21-2.94 6.24-6.996 9.28z"/></svg>
+              <span>44K</span>
+            </button>
+            <button class="tweet-action bookmark" title="Bookmark">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v17.72c0 .48-.37.88-.85.88-.16 0-.32-.05-.46-.14L12 18.23l-6.69 4.73c-.14.09-.3.14-.46.14-.48 0-.85-.4-.85-.88V4.5zM6.5 4c-.276 0-.5.22-.5.5v15.22l5.54-3.92c.28-.2.64-.2.92 0l5.54 3.92V4.5c0-.28-.224-.5-.5-.5h-11z"/></svg>
+              <span>2.1K</span>
+            </button>
+            <button class="tweet-action copy-action-btn" id="tweet-copy-btn" title="Copy Tweet and Link to Clipboard">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-1.41-1.41-7.07 7.07 1.41 1.41 7.07-7.07zm-4.95 4.95l-1.41-1.41-1.42 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41-1.41-1.42-1.42 1.42c-1.17 1.17-3.07 1.17-4.24 0-1.17-1.17-1.17-3.07 0-4.24l1.42-1.42z"/></svg>
+              <span id="tweet-copy-label">Copy</span>
+            </button>
           </div>
         </div>
       </div>
