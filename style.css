@@ -193,13 +193,107 @@ body.cyber-dark {
   position: relative;
 }
 
-/* Targeted Liquify Melting */
+/* ==========================================================================
+   AMPED-UP REALITY MELTING & MOLTEN DISTORTION
+   ========================================================================== */
+body.in-melt-zone {
+  background-color: #0c0205 !important;
+  background-image: 
+    radial-gradient(circle at 50% 15%, rgba(255, 43, 86, calc(0.14 + var(--melt-intensity, 0.5) * 0.22)) 0%, rgba(10, 2, 5, 0.96) 50%, #050103 100%),
+    linear-gradient(rgba(255, 43, 86, calc(0.04 + var(--melt-intensity, 0.5) * 0.08)) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 43, 86, calc(0.04 + var(--melt-intensity, 0.5) * 0.08)) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 36px 36px, 36px 36px !important;
+  transition: background-color 0.4s ease;
+}
+
+/* Targeted Liquify Distortion on Major Modules */
 body.in-melt-zone .hero-section,
-body.in-melt-zone .state-inspector-card,
+body.in-melt-zone .countdown-card,
 body.in-melt-zone .tweet-card,
-body.in-melt-zone .countdown-card {
+body.in-melt-zone .state-inspector-card,
+body.in-melt-zone #orders-of-magnitude-section .module-header,
+body.in-melt-zone #orders-of-magnitude-section .slider-hud,
+body.in-melt-zone #elon-timeline-section,
+body.in-melt-zone .site-footer {
   filter: url(#melt-distortion);
-  transition: filter 0.2s ease;
+  transition: filter 0.15s ease;
+}
+
+/* Molten sagging & radiant heat bleed on cards */
+body.in-melt-zone .countdown-card,
+body.in-melt-zone .tweet-card,
+body.in-melt-zone .state-inspector-card,
+body.in-melt-zone #elon-timeline-section {
+  border-color: rgba(255, 43, 86, calc(0.35 + var(--melt-intensity, 0.5) * 0.65));
+  box-shadow: 
+    0 15px 40px rgba(255, 43, 86, calc(0.2 + var(--melt-intensity, 0.5) * 0.45)),
+    0 30px 90px rgba(255, 80, 0, calc(0.1 + var(--melt-intensity, 0.5) * 0.3)),
+    inset 0 -12px 28px rgba(255, 43, 86, calc(0.1 + var(--melt-intensity, 0.5) * 0.25));
+  animation: cardMoltenSag 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes cardMoltenSag {
+  0% {
+    border-radius: 16px 16px 18px 18px;
+    transform: translateY(0) skewX(0deg);
+  }
+  50% {
+    border-radius: 14px 18px 28px 22px;
+    transform: translateY(4px) skewX(0.9deg) scaleY(1.015);
+  }
+  100% {
+    border-radius: 18px 14px 24px 34px;
+    transform: translateY(8px) skewX(-0.9deg) scaleY(1.025);
+  }
+}
+
+/* Molten Droplet Drip Accents under major cards */
+body.in-melt-zone .countdown-card::after,
+body.in-melt-zone .state-inspector-card::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 20%;
+  right: 20%;
+  height: 8px;
+  background: radial-gradient(ellipse at center, rgba(255, 43, 86, 0.95) 0%, rgba(255, 100, 0, 0.7) 45%, transparent 80%);
+  filter: blur(3px);
+  border-radius: 50%;
+  animation: moltenDripPulse 2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes moltenDripPulse {
+  0% { opacity: 0.4; transform: scaleX(0.85) translateY(0); }
+  100% { opacity: 1; transform: scaleX(1.15) translateY(5px); }
+}
+
+/* Molten Title & Digits Heat Effect */
+body.in-melt-zone .main-title {
+  background: linear-gradient(180deg, #ffffff 15%, #ff708d 65%, #ff2b56 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(255, 43, 86, calc(0.4 + var(--melt-intensity, 0.5) * 0.6)));
+  animation: titleMoltenHeat 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleMoltenHeat {
+  0% { transform: translateY(0) skewX(0deg); }
+  50% { transform: translateY(3px) skewX(1.2deg) scaleY(1.02); }
+  100% { transform: translateY(6px) skewX(-1.2deg) scaleY(1.04); }
+}
+
+body.in-melt-zone .time-number {
+  color: #ff3b65;
+  text-shadow: 
+    0 0 15px rgba(255, 59, 101, 0.9), 
+    0 6px 14px rgba(255, 0, 55, 0.6);
+  animation: digitsMoltenSag 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes digitsMoltenSag {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px) scaleY(1.08); }
 }
 
 
@@ -706,16 +800,31 @@ body.in-melt-zone .countdown-card {
   cursor: grab;
 }
 
-/* In extreme melt state, thumb glows violently red */
+/* In extreme melt state, track and thumb turn into superheated plasma */
+body.in-melt-zone .slider-fill-glow {
+  opacity: 1;
+  background: radial-gradient(ellipse at center, rgba(255, 43, 86, 0.85) 0%, rgba(255, 90, 0, 0.5) 45%, transparent 75%);
+  filter: blur(14px);
+  animation: sliderMeltGlow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes sliderMeltGlow {
+  0% { transform: scaleY(1); opacity: 0.7; }
+  100% { transform: scaleY(1.7); opacity: 1; }
+}
+
 body.in-melt-zone .log-slider::-webkit-slider-thumb {
-  border-color: var(--accent-red);
-  box-shadow: 0 0 25px var(--accent-red), 0 0 50px rgba(255, 43, 86, 0.8);
-  animation: thumbPulse 0.4s infinite alternate;
+  border-color: #ff0044;
+  box-shadow: 
+    0 0 25px #ff2b56, 
+    0 0 55px rgba(255, 43, 86, 0.95), 
+    0 0 90px rgba(255, 110, 0, 0.75);
+  animation: thumbPulse 0.5s ease-in-out infinite alternate;
 }
 
 @keyframes thumbPulse {
-  from { transform: scale(1.1); }
-  to { transform: scale(1.3); }
+  from { transform: scale(1.15); }
+  to { transform: scale(1.4); }
 }
 
 /* Milestone Pins Above and Below Track */
@@ -924,12 +1033,13 @@ body.in-melt-zone .floating-glitch-layer {
 }
 
 .spinner-icon {
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--accent-red);
-  border-top-color: transparent;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid rgba(255, 43, 86, 0.25);
+  border-top-color: var(--accent-red);
+  border-right-color: #ff8533;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: spin var(--spinner-speed, 0.6s) linear infinite;
   flex-shrink: 0;
 }
 
@@ -941,22 +1051,25 @@ body.in-melt-zone .floating-glitch-layer {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: rgba(14, 18, 27, 0.92);
+  background: rgba(14, 18, 27, 0.94);
   border: 1px solid var(--accent-red);
-  box-shadow: 0 0 25px rgba(255, 43, 86, 0.45), inset 0 0 10px rgba(255, 43, 86, 0.2);
-  padding: 0.75rem 1.25rem;
+  box-shadow: 
+    0 0 30px rgba(255, 43, 86, 0.6), 
+    0 0 60px rgba(255, 90, 0, 0.35), 
+    inset 0 0 15px rgba(255, 43, 86, 0.25);
+  padding: 0.85rem 1.4rem;
   border-radius: 999px;
   color: #fff;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  backdrop-filter: blur(12px);
+  gap: 0.85rem;
+  backdrop-filter: blur(14px);
   z-index: 10000;
-  animation: grokBubbleFloat 3s ease-in-out infinite alternate;
+  animation: grokBubbleFloat 2.5s ease-in-out infinite alternate;
   pointer-events: auto;
 }
 

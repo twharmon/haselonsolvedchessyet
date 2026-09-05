@@ -45,6 +45,7 @@
   const milestonePins = document.querySelectorAll('.milestone-pin');
   const appWrapper = document.getElementById('app-wrapper');
   const displacementBase = document.getElementById('displacement-base');
+  const turbulenceBase = document.getElementById('turbulence-base');
   const glitchLayer = document.getElementById('glitch-layer');
 
   // Nav & Utility DOM
@@ -299,17 +300,61 @@
     }
   }
 
+  // Live liquid undulation loop
+  let meltAnimFrame = null;
+  let meltPhase = 0;
+
+  function startMeltAnimation() {
+    if (meltAnimFrame) return;
+    function loop() {
+      if (!document.body.classList.contains('in-melt-zone')) {
+        meltAnimFrame = null;
+        return;
+      }
+      meltPhase += 0.025;
+      if (turbulenceBase) {
+        // Gently undulate frequency to create liquid heatwave rippling
+        const freqX = 0.005 + Math.sin(meltPhase * 1.1) * 0.002;
+        const freqY = 0.016 + Math.cos(meltPhase * 0.85) * 0.004;
+        turbulenceBase.setAttribute('baseFrequency', `${freqX.toFixed(5)} ${freqY.toFixed(5)}`);
+      }
+      meltAnimFrame = requestAnimationFrame(loop);
+    }
+    meltAnimFrame = requestAnimationFrame(loop);
+  }
+
+  function stopMeltAnimation() {
+    if (meltAnimFrame) {
+      cancelAnimationFrame(meltAnimFrame);
+      meltAnimFrame = null;
+    }
+    if (turbulenceBase) {
+      turbulenceBase.setAttribute('baseFrequency', '0.006 0.018');
+    }
+  }
+
   function updateMeltZone(val) {
     if (val > 20) {
       document.body.classList.add('in-melt-zone');
       appWrapper.classList.add('melting');
 
-      // Controlled liquid wave distortion (range: 2 to 14, looks fluid & wavy)
+      // Amped up liquid wave distortion (range: 6 to 36)
       const excess = val - 20; // 0 to 100
-      const meltScale = Math.min(14, 2 + (excess / 100) * 12);
+      const intensity = Math.min(1, Math.max(0, excess / 100));
+      // Base distortion starts at 6 and scales up to 36 for extreme universe-scale absurdity
+      const meltScale = 6 + Math.pow(intensity, 0.85) * 30;
       if (displacementBase) {
         displacementBase.setAttribute('scale', meltScale.toFixed(1));
       }
+
+      // Pass intensity to CSS custom properties
+      document.documentElement.style.setProperty('--melt-intensity', intensity.toFixed(3));
+      
+      // Dynamic spinner speed (0.6s down to 0.2s)
+      const spinSpeed = (0.6 - intensity * 0.4).toFixed(2) + 's';
+      document.documentElement.style.setProperty('--spinner-speed', spinSpeed);
+
+      startMeltAnimation();
 
       // Show the single spinner bubble: "Compressing with Grok"
       spawnSingleGrokBubble();
@@ -318,9 +363,12 @@
     } else {
       document.body.classList.remove('in-melt-zone');
       appWrapper.classList.remove('melting');
+      document.documentElement.style.setProperty('--melt-intensity', '0');
+      document.documentElement.style.setProperty('--spinner-speed', '0.6s');
       if (displacementBase) {
         displacementBase.setAttribute('scale', '0');
       }
+      stopMeltAnimation();
       removeSingleGrokBubble();
     }
   }
@@ -402,7 +450,10 @@
     window.open(xUrl, '_blank');
   });
 
-  // Initial setup
-  handleSliderChange(20);
+  // Initial setup (supports ?val= query parameter for direct linking/testing)
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialVal = urlParams.has('val') ? parseFloat(urlParams.get('val')) : 20;
+  orderSlider.value = initialVal;
+  handleSliderChange(initialVal);
 
 })();
