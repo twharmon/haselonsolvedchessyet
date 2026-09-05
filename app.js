@@ -52,7 +52,12 @@
   const sfxToggle = document.getElementById('sfx-toggle');
   const sfxIcon = document.getElementById('sfx-icon');
   const sfxText = document.getElementById('sfx-text');
+  const copyBtn = document.getElementById('copy-btn');
+  const copyIcon = document.getElementById('copy-icon');
+  const copyText = document.getElementById('copy-text');
   const shareBtn = document.getElementById('share-btn');
+  const tweetCopyBtn = document.getElementById('tweet-copy-btn');
+  const tweetCopyLabel = document.getElementById('tweet-copy-label');
   const footerResetBtn = document.getElementById('footer-reset-btn');
 
   // =========================================================================
@@ -70,13 +75,15 @@
     }
   }
 
-  function playTone(freq, type = 'sine', duration = 0.08, gainVal = 0.08) {
+  function playTone(freq, type = 'sine', duration = 0.12, gainVal = 0.18) {
     if (!sfxEnabled || !audioCtx) return;
     try {
+      // Clamped strictly to 50-100Hz low-frequency range
+      const clampedFreq = Math.min(100, Math.max(50, freq));
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = type;
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(clampedFreq, audioCtx.currentTime);
       gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
       osc.connect(gain);
@@ -91,7 +98,7 @@
   function playGlitchNoise() {
     if (!sfxEnabled || !audioCtx) return;
     try {
-      const bufferSize = audioCtx.sampleRate * 0.1;
+      const bufferSize = Math.floor(audioCtx.sampleRate * 0.12);
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
@@ -100,13 +107,13 @@
       const noise = audioCtx.createBufferSource();
       noise.buffer = buffer;
       const filter = audioCtx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 1100;
-      filter.Q.value = 2.5;
+      filter.type = 'lowpass';
+      filter.frequency.value = 80; // Deep 80Hz rumble
+      filter.Q.value = 3.2;
 
       const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.24, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
 
       noise.connect(filter);
       filter.connect(gain);
@@ -122,7 +129,7 @@
       sfxIcon.textContent = '🔊';
       sfxText.textContent = 'SOUND: ON';
       sfxToggle.style.borderColor = 'var(--accent-cyan)';
-      playTone(600, 'sine', 0.1);
+      playTone(70, 'sine', 0.15, 0.22);
     } else {
       sfxIcon.textContent = '🔇';
       sfxText.textContent = 'SOUND: OFF';
@@ -376,9 +383,9 @@
   function handleSliderChange(val) {
     const numVal = parseFloat(val);
 
-    // Play pitch-shifting audio feedback
-    const synthFreq = 150 + (numVal / 120) * 1200;
-    playTone(synthFreq, numVal > 20 ? 'sawtooth' : 'sine', 0.04, 0.05);
+    // Low-frequency (50-100Hz) sub-bass audio feedback
+    const synthFreq = 50 + (numVal / 120) * 50;
+    playTone(synthFreq, numVal > 20 ? 'sawtooth' : 'sine', 0.08, 0.18);
 
     // Find corresponding data segment
     const currentData = MAGNITUDE_DATA.find(d => numVal <= d.maxVal) || MAGNITUDE_DATA[MAGNITUDE_DATA.length - 1];
@@ -433,22 +440,113 @@
   footerResetBtn.addEventListener('click', () => {
     orderSlider.value = 20;
     handleSliderChange(20);
-    playTone(440, 'sine', 0.1);
+    playTone(55, 'sine', 0.18, 0.22);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  shareBtn.addEventListener('click', () => {
+  function getSharePayload() {
     const yearsLeft = cdYears.textContent;
     const daysLeft = cdDays.textContent;
-    const shareText = encodeURIComponent(
-      `Has Elon solved chess yet? NO.\n\n` +
-      `Time remaining until his 10-year deadline: ${yearsLeft} years, ${daysLeft} days.\n` +
-      `Current progress: 0.00000000001% (Shannon Number: 10¹²⁰ variations).\n\n` +
-      `Track the delusion live: https://haselonsolvedchessyet.com`
-    );
-    const xUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
-    window.open(xUrl, '_blank');
-  });
+    const currentVal = orderSlider.value;
+    const numVal = parseFloat(currentVal);
+    const expDisplay = (numVal % 1 === 0 || Math.abs(numVal - Math.round(numVal)) < 0.05)
+      ? `10^${Math.round(numVal)}`
+      : `10^${numVal.toFixed(1)}`;
+    const url = numVal === 20 
+      ? 'https://haselonsolvedchessyet.com' 
+      : `https://haselonsolvedchessyet.com/?val=${numVal}`;
+
+    return {
+      text: `Has Elon solved chess yet? NO.\n\n` +
+            `Time remaining until his 10-year deadline: ${yearsLeft} years, ${daysLeft} days.\n` +
+            `Current scale: ${expDisplay} (Shannon Number: 10¹²⁰ variations).\n\n` +
+            `Track the delusion live: ${url}`,
+      url: url
+    };
+  }
+
+  function copyTextToClipboard(text, onDone) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => { if (onDone) onDone(true); })
+        .catch(() => { fallbackCopy(text, onDone); });
+    } else {
+      fallbackCopy(text, onDone);
+    }
+  }
+
+  function fallbackCopy(text, onDone) {
+    let success = false;
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      success = document.execCommand('copy');
+    } catch (e) {
+      success = false;
+    }
+    ta.remove();
+    if (onDone) onDone(success);
+  }
+
+  // Copy Link & Telemetry Button (Top Nav)
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const payload = getSharePayload();
+      copyTextToClipboard(payload.text, (ok) => {
+        playTone(75, 'sine', 0.15, 0.2);
+        if (copyText && copyIcon) {
+          const origText = copyText.textContent;
+          const origIcon = copyIcon.textContent;
+          copyText.textContent = ok ? 'COPIED!' : 'ERROR';
+          copyIcon.textContent = ok ? '✓' : '⚠️';
+          copyBtn.style.borderColor = 'var(--accent-cyan)';
+          copyBtn.style.color = 'var(--accent-cyan)';
+          setTimeout(() => {
+            copyText.textContent = origText;
+            copyIcon.textContent = origIcon;
+            copyBtn.style.borderColor = '';
+            copyBtn.style.color = '';
+          }, 2000);
+        }
+      });
+    });
+  }
+
+  // Copy Tweet Button (Tweet Card)
+  if (tweetCopyBtn) {
+    tweetCopyBtn.addEventListener('click', () => {
+      const tweetContent = 
+        `"I predict that chess will be essentially fully solved (like checkers) within 10 years." — Elon Musk (@elonmusk)\n\n` +
+        `Target: May 12, 2034\n` +
+        `Complexity: Chess has 10¹²⁰ game variations. Observable universe has only 10⁸⁰ atoms.\n\n` +
+        `Live delusion tracker: https://haselonsolvedchessyet.com`;
+      copyTextToClipboard(tweetContent, (ok) => {
+        playTone(65, 'sine', 0.15, 0.2);
+        tweetCopyBtn.classList.add('copied');
+        if (tweetCopyLabel) tweetCopyLabel.textContent = ok ? 'Copied!' : 'Failed';
+        setTimeout(() => {
+          tweetCopyBtn.classList.remove('copied');
+          if (tweetCopyLabel) tweetCopyLabel.textContent = 'Copy';
+        }, 2000);
+      });
+    });
+  }
+
+  // Share on X Button (if present)
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      const payload = getSharePayload();
+      const shareText = encodeURIComponent(payload.text);
+      const xUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
+      window.open(xUrl, '_blank');
+    });
+  }
 
   // Initial setup (supports ?val= query parameter for direct linking/testing)
   const urlParams = new URLSearchParams(window.location.search);
