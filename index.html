@@ -17,13 +17,8 @@
   <svg class="svg-filters" aria-hidden="true" style="position: absolute; width: 0; height: 0; pointer-events: none;">
     <defs>
       <filter id="melt-distortion">
-        <feTurbulence id="turbulence-base" type="fractalNoise" baseFrequency="0.01 0.05" numOctaves="2" result="noise" />
+        <feTurbulence id="turbulence-base" type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" result="noise" />
         <feDisplacementMap id="displacement-base" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
-      </filter>
-      <filter id="extreme-glitch">
-        <feTurbulence id="glitch-turb" type="turbulence" baseFrequency="0.05 0.95" numOctaves="1" result="glitchNoise" />
-        <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
-        <feDisplacementMap in="SourceGraphic" in2="glitchNoise" scale="25" />
       </filter>
     </defs>
   </svg>
@@ -43,6 +38,18 @@
         <span class="icon">𝕏</span>
         <span>SHARE DELUSION</span>
       </button>
+    </div>
+  </div>
+
+  <!-- Computational Overheat Emergency Bar (Shown when slider > 10^20) -->
+  <div class="melt-alert-hud" id="melt-alert-hud">
+    <div class="alert-tag">
+      <span class="alert-pulse-flame">🔥</span>
+      <span>THERMODYNAMIC WARNING: EXCEEDED 10²⁰ COMPUTATIONAL HORIZON</span>
+    </div>
+    <div class="alert-action">
+      <span class="alert-grok-quote">Compressing with Grok 3...</span>
+      <button id="emergency-restore-btn" class="emergency-restore-btn">RESTORE REALITY (10²⁰)</button>
     </div>
   </div>
 
@@ -193,47 +200,49 @@
         </div>
       </div>
 
-      <!-- Custom Interactive Range Slider -->
-      <div class="log-slider-container">
+        <!-- Solved Milestones (Above Track) -->
+        <div class="slider-milestones-above">
+          <button class="milestone-pin pin-above" data-val="3" style="left: 2.5%;">
+            <span class="pin-name">Tic-Tac-Toe</span>
+            <span class="pin-exp">10³</span>
+            <span class="pin-tick tick-down"></span>
+          </button>
+          <button class="milestone-pin pin-above" data-val="13" style="left: 10.8%;">
+            <span class="pin-name">Connect 4</span>
+            <span class="pin-exp">10¹³</span>
+            <span class="pin-tick tick-down"></span>
+          </button>
+          <button class="milestone-pin pin-above active boundary-pin" data-val="20" style="left: 16.6%;">
+            <span class="pin-name">Checkers</span>
+            <span class="pin-exp">10²⁰</span>
+            <span class="pin-tick tick-down solved-boundary"></span>
+          </button>
+        </div>
+
         <div class="slider-track-wrap">
           <input type="range" id="order-slider" min="0" max="120" value="20" step="0.1" class="log-slider" aria-label="Orders of Magnitude Slider">
           <div class="slider-fill-glow" id="slider-glow"></div>
         </div>
 
-        <!-- Milestone Markers -->
-        <div class="slider-milestones">
-          <button class="milestone-pin" data-val="3" style="left: 2.5%;">
-            <span class="pin-tick"></span>
-            <span class="pin-exp">10³</span>
-            <span class="pin-name">Tic-Tac-Toe</span>
-          </button>
-          <button class="milestone-pin" data-val="13" style="left: 10.8%;">
-            <span class="pin-tick"></span>
-            <span class="pin-exp">10¹³</span>
-            <span class="pin-name">Connect Four</span>
-          </button>
-          <button class="milestone-pin active" data-val="20" style="left: 16.6%;">
-            <span class="pin-tick solved-boundary"></span>
-            <span class="pin-exp">10²⁰</span>
-            <span class="pin-name">Checkers (2007)</span>
-          </button>
-          <button class="milestone-pin danger" data-val="22" style="left: 18.3%;">
-            <span class="pin-tick"></span>
+        <!-- Unsolved / Cosmic Milestones (Below Track) -->
+        <div class="slider-milestones-below">
+          <button class="milestone-pin pin-below danger" data-val="22" style="left: 18.3%;">
+            <span class="pin-tick tick-up"></span>
             <span class="pin-exp">10²²</span>
-            <span class="pin-name">8-Piece Tablebase</span>
+            <span class="pin-name">8-Piece Base</span>
           </button>
-          <button class="milestone-pin danger" data-val="44" style="left: 36.6%;">
-            <span class="pin-tick"></span>
+          <button class="milestone-pin pin-below danger" data-val="44" style="left: 36.6%;">
+            <span class="pin-tick tick-up"></span>
             <span class="pin-exp">10⁴⁴</span>
             <span class="pin-name">Legal Positions</span>
           </button>
-          <button class="milestone-pin danger" data-val="80" style="left: 66.6%;">
-            <span class="pin-tick"></span>
+          <button class="milestone-pin pin-below danger" data-val="80" style="left: 66.6%;">
+            <span class="pin-tick tick-up"></span>
             <span class="pin-exp">10⁸⁰</span>
             <span class="pin-name">Universe Atoms</span>
           </button>
-          <button class="milestone-pin danger" data-val="120" style="left: 98%;">
-            <span class="pin-tick"></span>
+          <button class="milestone-pin pin-below danger" data-val="120" style="left: 98%;">
+            <span class="pin-tick tick-up"></span>
             <span class="pin-exp">10¹²⁰</span>
             <span class="pin-name">Shannon Number</span>
           </button>
@@ -308,6 +317,47 @@
         </div>
         <div class="mode-caption font-mono" id="mode-caption">
           Viewing ground-truth mathematical progress: Elon's bar is flatlined at 0.00000000001%.
+        </div>
+      </div>
+
+      <!-- Interactive Comparison Slider Widget for Scale of Delusion -->
+      <div class="delusion-slider-box">
+        <div class="delusion-slider-header">
+          <span class="delusion-slider-tag font-mono">INTERACTIVE SCALE COMPARATOR</span>
+          <span class="delusion-slider-readout font-mono" id="delusion-slider-readout">SCALE 1 / 4: 8-PIECE TABLEBASE</span>
+        </div>
+        
+        <div class="delusion-slider-wrap">
+          <input type="range" id="delusion-step-slider" min="0" max="3" value="0" step="1" class="delusion-range" aria-label="Scale of Delusion Comparison Slider">
+          <div class="delusion-steps-legend">
+            <button class="step-mark active" data-step="0">
+              <span class="step-pip"></span>
+              <span class="step-label">8-Piece Tablebase<br><strong>~10¹⁴</strong></span>
+            </button>
+            <button class="step-mark" data-step="1">
+              <span class="step-pip"></span>
+              <span class="step-label">Legal Positions<br><strong>10⁴⁴</strong></span>
+            </button>
+            <button class="step-mark" data-step="2">
+              <span class="step-pip"></span>
+              <span class="step-label">Universe Atoms<br><strong>10⁸⁰</strong></span>
+            </button>
+            <button class="step-mark" data-step="3">
+              <span class="step-pip"></span>
+              <span class="step-label">Shannon Number<br><strong>10¹²⁰</strong></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="delusion-focal-card" id="delusion-focal-card">
+          <div class="focal-metric-main">
+            <span class="focal-title" id="focal-title">Number of 8-Piece Tablebase Positions Solved So Far</span>
+            <span class="focal-ratio font-mono" id="focal-ratio">RATIO TO FULL CHESS: 0.0000000000000000000000000000004%</span>
+          </div>
+          <p class="focal-text" id="focal-text">
+            Humanity has only partially computed endgames with 8 pieces or fewer, requiring ~15 Petabytes of storage. 
+            Comparing this to full 32-piece chess is like comparing a single grain of sand to a million Saharas.
+          </p>
         </div>
       </div>
 
